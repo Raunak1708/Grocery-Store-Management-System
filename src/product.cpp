@@ -17,12 +17,12 @@ string Product :: getname() const{
 double Product :: getprice() const{
     return price;
 }
-int Product :: getstock() const{
+int Product :: getquantity() const{
     return stock;
 }
 
 // setters
-void Product :: setstock(int q){
+void Product :: setquantity(int q){
     stock=q;
     return;
 }

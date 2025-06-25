@@ -17,10 +17,10 @@ class Product{
         int getid() const;
         string getname() const;
         double getprice() const;
-        int getstock() const;
+        int getquantity() const;
 
         // set functions
-        void setstock(int q);
+        void setquantity(int q);
         void setprice(double p);
         void setName(const std::string& newName);
 

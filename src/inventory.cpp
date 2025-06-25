@@ -34,7 +34,7 @@ bool Inventory::updateproduct(int id, const string& newname, double newprice, in
         if (p.getid() == id) {
             // Direct member access is not allowed, so we add setters
             p.setprice(newprice);
-            p.setstock(newstock);
+            p.setquantity(newstock);
             // To update name, we’ll need to add setName() in Product class
             p.setName(newname);
             return true;
