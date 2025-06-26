@@ -12,5 +12,7 @@ class Cart{
             void viewcart() const;
             double totalamount() const;
             bool isempty() const; 
+            void clearCart();
+            const vector<Product>& getItems() const;
 };
 #endif

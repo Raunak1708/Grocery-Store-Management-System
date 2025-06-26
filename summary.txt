@@ -1,0 +1,9 @@
+
+Date: 26-06-2025 23:18:05
+Orders: 0, Revenue: Rs. 0
+
+Date: 26-06-2025 23:22:18
+Orders: 1, Revenue: Rs. 91750
+
+Date: 26-06-2025 23:27:21
+Orders: 1, Revenue: Rs. 99750

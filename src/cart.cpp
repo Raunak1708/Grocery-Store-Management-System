@@ -40,3 +40,10 @@ double Cart :: totalamount() const{
 bool Cart :: isempty() const{
     return items.empty();
 }
+void Cart::clearCart() {
+    items.clear();
+}
+
+const vector<Product>& Cart::getItems() const {
+    return items;
+}
