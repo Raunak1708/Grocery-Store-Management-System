@@ -7,7 +7,7 @@ class Cart{
     private:
         vector<Product>items;
     public:
-            void additem(Product& p,int s);
+            void additem( Product& p,int s);
             void removeitem(int id);
             void viewcart() const;
             double totalamount() const;

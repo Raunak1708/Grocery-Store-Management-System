@@ -55,7 +55,7 @@ int main(){
             } else if (qty > p->getquantity()) {
                 std::cout << "Insufficient stock. Available: " << p->getquantity() << "\n";
             } else {
-                cart.additem(*p, qty);
+                cart.additem(*p,qty);
                 std::cout << "Item added to cart.\n";
             }
 

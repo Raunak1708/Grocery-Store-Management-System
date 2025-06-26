@@ -3,10 +3,18 @@
 
 using namespace std;
 
-void Cart :: additem(Product& p,int s){
+void Cart::additem( Product& p,int s) {
+    for (auto& item : items) {
+        if (item.getid() == p.getid()) {
+            // Product already in cart: increase quantity
+            item.setquantity(item.getquantity() + s);
+            return;
+        }
+    }
     Product item=p;
-    item.setquantity(s);
-    items.push_back(item);
+    p.setquantity(s);
+    // Not found, add as new item
+    items.push_back(p);
 }
 
 void Cart :: removeitem(int id){
