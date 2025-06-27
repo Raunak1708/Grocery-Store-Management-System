@@ -1,0 +1,12 @@
+🧾 Receipt — Order ID: ORD101
+Date/Time: 27-06-2025 23:30:55
+
+Item           Qty     Price       Total
+----------------------------------------------
+Bread          120     30.00     3600.00
+Sugar          500     40.50    20250.00
+Shampoo        250    200.00    50000.00
+----------------------------------------------
+           Grand Total: Rs.     73850.00
+
+Thank you for shopping with us!

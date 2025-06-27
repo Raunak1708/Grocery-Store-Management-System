@@ -14,6 +14,11 @@ class Inventory{
         void displayall()const;
         Product* searchbyId(int id);
         bool updateproduct(int id,const string& newname,double newprice,int newstock);
+
+          void loadFromFile(const string& filename);
+        void saveToFile(const string& filename) const;
+
+    const vector<Product>& getAll() const { return products; } 
 };
 
 

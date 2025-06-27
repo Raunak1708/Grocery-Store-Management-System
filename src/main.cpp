@@ -26,13 +26,10 @@ std::string generateOrderID(int orderCount) {
 int main(){
     Inventory inv;
     Cart cart;
-    inv.addproduct(Product(1,"Biscuit",25.00,500));
-    inv.addproduct(Product(2,"shampoo",200,250));
-    inv.addproduct(Product(3,"sugar",40.5,1000));
-
+    inv.loadFromFile("data/products.txt");
     int choice;
    do {
-        std::cout << "\n1. View Products\n2. Add to Cart\n3. View Cart\n4. Remove from Cart\n5. View Total\n6. Checkout\n7. Exit\nChoice: ";
+        std::cout << "\n1. View Products\n2. Add to Cart\n3. View Cart\n4. Remove from Cart\n5. View Total\n6. Checkout\n7.Manager Report\n8. Exit\nChoice: ";
         std::cin >> choice;
 
         if (choice == 1) {
@@ -92,6 +89,7 @@ int main(){
                         invProd->setquantity(updateqty);
                     }
                 }
+                inv.saveToFile("data/products.txt");
                  // Save receipt to file
     std::ofstream receiptFile("receipt_" + orderID + ".txt");
     receiptFile << "🧾 Receipt — Order ID: " << orderID << "\n";

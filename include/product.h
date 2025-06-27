@@ -1,6 +1,6 @@
 #ifndef PRODUCT_H
 #define PRODUCT_H
-
+// #include<iostream>
 #include<string>
 using namespace std;
 class Product{
@@ -23,6 +23,7 @@ class Product{
         void setquantity(int q);
         void setprice(double p);
         void setName(const std::string& newName);
+        
 
         // display 
         void display() const;
