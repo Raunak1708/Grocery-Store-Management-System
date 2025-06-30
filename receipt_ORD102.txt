@@ -1,0 +1,13 @@
+ Receipt — Order ID: ORD102
+Date/Time: 01-07-2025 00:44:46
+
+Item           Qty     Price       Total
+----------------------------------------------
+Biscuit        500     25.00    12500.00
+Shampoo        100    200.00    20000.00
+Milk           100     50.00     5000.00
+Chips          100     50.00     5000.00
+----------------------------------------------
+           Grand Total: Rs.     42500.00
+
+Thank you for shopping with us!

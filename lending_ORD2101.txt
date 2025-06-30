@@ -1,0 +1,5 @@
+ Lending Receipt — ORD2101
+Borrower: raunak
+Date: 01-07-2025 00:43:14
+Item: Toothpaste, Qty: 500, Rate: Rs. 50.00, Total: Rs. 25000.00
+Due so far: Rs. 71000.00

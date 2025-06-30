@@ -1,0 +1,5 @@
+ Lending Receipt — ORD2102
+Borrower: raunak
+Date: 01-07-2025 00:40:41
+Item: Sugar, Qty: 300, Rate: Rs. 40.50, Total: Rs. 12150.00
+Due so far: Rs. 16200.00
