@@ -2,7 +2,7 @@
 #include "../include/product.h"
 #include "../include/inventory.h"
 #include "../include/cart.h"    
-#include "../include/lendingcart.h"      
+#include "../include/lendingledger.h"      
 using namespace std;
 double totalRevenue = 0;
 int orderCount = 0;
@@ -27,11 +27,11 @@ std::string generateOrderID(int orderCount) {
 int main(){
     Inventory inv;
     Cart cart;
-    LendingCart lending;
+    LendingLedger ledger;
     inv.loadFromFile("data/products.txt");
     int choice;
    do {
-        std::cout << "\n1. View Products\n2. Add to Cart\n3. View Cart\n4. Remove from Cart\n5. View Total\n6. Checkout\n7.Manager Report\n8.Lend Products (Pay Later)\n9. View Borrowed Items\n10.Repay Borrowed Amount\n11. Exit\nChoice: ";
+        std::cout << "\n1. View Products\n2. Add to Cart\n3. View Cart\n4. Remove from Cart\n5. View Total\n6. Checkout\n7.Manager Report\n8.Lend Products (Pay Later)\n9. View Borrowed Items\n10.Repay Borrowed Amount\n11.List all Borrowers\n12. Exit\nChoice: ";
         std::cin >> choice;
 
         if (choice == 1) {
@@ -124,8 +124,8 @@ receiptFile << std::right << std::setw(28) << "Grand Total: Rs. "
     cart.clearCart();
         }
         else if(choice ==7){
-               std::cout << "\n===== Manager Report =====\n";
-    std::cout << "Total Orders Today: " << orderCount << "\n";
+                cout << "\n===== Manager Report =====\n";
+      cout << "Total Orders Today: " << orderCount << "\n";
     std::cout << "Total Revenue: Rs. " << totalRevenue << "\n";
 
     std::ofstream summary("summary.txt", std::ios::app);
@@ -133,93 +133,68 @@ receiptFile << std::right << std::setw(28) << "Grand Total: Rs. "
     summary << "Orders: " << orderCount << ", Revenue: Rs. " << totalRevenue << "\n";
     summary.close();
         }
-        else if (choice == 8) {
-    // if (!lending.isEmpty()) {
-    //     cout << "  You have unpaid dues of Rs. " << lending.getdueAmount()
-    //          << ". Please repay before borrowing again.\n";
-    //     continue;
-    // }
+       else if(choice==8){
+        string name;
+cout << "Enter borrower name: ";
+cin.ignore();
+getline(cin, name);
 
-    if (lending.getdueAmount() > 50000) {
-        cout << " Lending blocked. Due exceeds Rs. 50000\n";
-        continue;
-    }
+int id, qty;
+cout << "Enter product ID: ";
+cin >> id;
+Product* p = inv.searchbyId(id);
+if (!p) { cout << "Not found\n"; continue; }
 
-    string name;
-    cout << "Enter borrower name: ";
-    cin.ignore(); // flush buffer
-    getline(cin, name);
-    lending.setborrowerName(name);
-
-    int id, qty;
-    cout << "Enter Product ID to lend: ";
-    cin >> id;
-    Product* p = inv.searchbyId(id);
-    if (!p) {
-        cout << "Product not found!\n";
-        continue;
-    }
-
-    cout << "Enter Quantity: ";
-    cin >> qty;
-    if (qty <= 0 || qty > p->getquantity()) {
-        cout << "Invalid quantity. Available: " << p->getquantity() << "\n";
-    } else {
-        lending.addlendingitem(*p, qty);
-        p->setquantity(p->getquantity() - qty);
-        cout << "✔️  Product lent. Rs. " << fixed << setprecision(2)
-             << p->getprice() * qty << " added to due.\n";
-
-        string lendID = generateOrderID(orderCount + 2000);
-        string timestamp = getCurrentTimestamp();
-
-        ofstream lendReceipt("lending_" + lendID + ".txt");
-        lendReceipt << " Lending Receipt — " << lendID << "\n";
-        lendReceipt << "Borrower: " << lending.getborrowerName() << "\n";
-        lendReceipt << "Date: " << timestamp << "\n";
-        lendReceipt << "Item: " << p->getname() << ", Qty: " << qty 
-                    << ", Rate: Rs. " << fixed << setprecision(2) << p->getprice() 
-                    << ", Total: Rs. " << fixed << setprecision(2) << (p->getprice() * qty) << "\n";
-        lendReceipt << "Due so far: Rs. " << lending.getdueAmount() << "\n";
-        lendReceipt.close();
-
-        cout << " Lending receipt saved as lending_" << lendID << ".txt\n";
-    }
+cout << "Enter quantity: ";
+cin >> qty;
+if (qty <= 0 || qty > p->getquantity()) {
+    cout << "Invalid quantity\n";
+} else {
+    ledger.lendProduct(name, *p, qty);
+    p->setquantity(p->getquantity() - qty);
+    inv.saveToFile("products.txt");  
+    cout << "Lent to " << name << ". Total due: " << ledger.getDue(name) << "\n";
 }
-    else if (choice == 9) {
-    lending.viewlentitems();
-}
-else if (choice == 10) {
-    if (lending.isEmpty()) {
-        cout << "No dues to repay.\n";
-        continue;
+
+       }
+       else if(choice==9){
+        string name;
+cout << "Enter borrower name: ";
+cin.ignore();
+getline(cin, name);
+ledger.viewBorrowed(name);
+
+       }
+       else if(choice==10){
+        string name;
+        
+cout << "Enter borrower name to repay: ";
+cin.ignore();
+getline(cin, name);
+cout<<"Amount Due: "<<ledger.getDue(name)<<endl;
+int amount;
+cout<<"Enter amount you are paying now: ";
+cin>>amount;
+if (!ledger.hasBorrowed(name)) {
+    cout << "No dues.\n";
+} else {
+    ledger.repay(name,amount);
+    if(ledger.getDue(name)){
+        cout<<"Dues Left : "<<ledger.getDue(name)<<endl;
     }
-
-    cout << "\nBorrower: " << lending.getborrowerName()
-         << "\nTotal Due: Rs. " << lending.getdueAmount() 
-         << "\nConfirm payment? (y/n): ";
-    char pay;
-    cin >> pay;
-    if (pay == 'y' || pay == 'Y') {
-        string repayID = generateOrderID(orderCount + 3000);
-        string timestamp = getCurrentTimestamp();
-
-        ofstream repay("repayment_" + repayID + ".txt");
-        repay << " Repayment Receipt — " << repayID << "\n";
-        repay << "Borrower: " << lending.getborrowerName() << "\n";
-        repay << "Date: " << timestamp << "\n";
-        repay << "Amount Paid: Rs. " << fixed << setprecision(2)
-              << lending.getdueAmount() << "\n";
-        repay << "Thank you!\n";
-        repay.close();
-        orderCount++;
-        totalRevenue+=lending.getdueAmount();
-        cout << "✔️  Repayment complete. Receipt saved as repayment_" << repayID << ".txt\n";
-        lending.clearlendingcart();
+    else{
+    cout << " Dues cleared for " << name << "\n";
     }
 }
 
-    } while (choice != 11);
+       }
+       else if(choice==11){
+        for (const auto& name : ledger.getAllBorrowers()) {
+    cout << name << ": Rs. " << ledger.getDue(name) << "\n";
+}
+
+       }
+    } while (choice != 12);
 
     return 0;
 }
